@@ -37,7 +37,21 @@ def load_config() -> dict:
     if not CONFIG_PATH.exists():
         log(f"ERROR: config not found at {CONFIG_PATH}")
         sys.exit(1)
-    return json.loads(CONFIG_PATH.read_text())
+    cfg = json.loads(CONFIG_PATH.read_text())
+
+    # Fail loudly if placeholders not replaced
+    tg = cfg.get("telegram", {})
+    token = tg.get("bot_token", "")
+    chat_id = tg.get("chat_id", "")
+
+    placeholder_pattern = {"ISI_", "xxxx", "XXXX", "<TOKEN>", "<CHAT_ID>", "1234567890:"}
+    for pp in placeholder_pattern:
+        if pp in token:
+            sys.exit(f"❌ ERROR: bot_token masih placeholder ({pp}). Edit ~/.config/adzan-notifier/config.json")
+        if pp in chat_id:
+            sys.exit(f"❌ ERROR: chat_id masih placeholder ({pp}). Edit ~/.config/adzan-notifier/config.json")
+
+    return cfg
 
 
 def fetch_jadwal(provinsi: str, kabkota: str, bulan: int, tahun: int) -> dict | None:

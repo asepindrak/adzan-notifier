@@ -79,8 +79,8 @@ File: `~/.config/adzan-notifier/config.json`
   "provinsi": "Jawa Barat",
   "kabkota": "Kab. Garut",
   "telegram": {
-    "bot_token": "1234567890:ABCdefGHIjklMNOpqrsTUVwxyz",
-    "chat_id": "8742775002"
+    "bot_token": "1234567890:xxx",
+    "chat_id": "xxx"
   },
   "adhan": {
     "enabled": true,

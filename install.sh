@@ -7,6 +7,7 @@ set -euo pipefail
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
 NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -69,14 +70,36 @@ fi
 mkdir -p "$CACHE_DIR/logs"
 echo "  ✅ Cache dir → $CACHE_DIR"
 
-# --- 3. Enable & start service ---
-echo -e "${YELLOW}[3/5] Enabling systemd user service...${NC}"
+# --- 3. Validate config ---
+echo -e "${YELLOW}[3/6] Validating config...${NC}"
+if [ -f "$CONFIG_FILE" ]; then
+    PLACEHOLDERS=$(grep -E "ISI_|xxxx|XXXX|1234567890|<TOKEN>|<CHAT_ID>" "$CONFIG_FILE" 2>/dev/null || true)
+    if [ -n "$PLACEHOLDERS" ]; then
+        echo -e "  ${RED}❌ Config masih punya placeholder:${NC}"
+        echo "$PLACEHOLDERS" | sed 's/^/    /'
+        echo ""
+        echo -e "  ${YELLOW}Edit dulu: nano $CONFIG_FILE${NC}"
+        echo -e "  ${YELLOW}Isi: telegram.bot_token dan telegram.chat_id yang sebenarnya${NC}"
+        echo ""
+        read -rp "  Lanjutkan tanpa fix? (y/N) " -n 1 -r
+        echo ""
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "Cancelled. Fix config dulu lalu jalankan ulang."
+            exit 1
+        fi
+    else
+        echo -e "  ✅ Config looks good"
+    fi
+fi
+
+# --- 4. Enable & start service ---
+echo -e "${YELLOW}[4/6] Enabling systemd user service...${NC}"
 systemctl --user daemon-reload
 systemctl --user enable adzan-notifier.service
 echo "  ✅ Service enabled (auto-starts on login)"
 
-# --- 4. Start service ---
-echo -e "${YELLOW}[4/5] Starting service...${NC}"
+# --- 5. Start service ---
+echo -e "${YELLOW}[5/6] Starting service...${NC}"
 systemctl --user start adzan-notifier.service
 sleep 2
 
@@ -88,7 +111,7 @@ else
     echo -e "  Check logs: journalctl --user -u adzan-notifier -n 20"
 fi
 
-# --- 5. Summary ---
+# --- 6. Summary ---
 echo ""
 echo -e "${GREEN}═══════════════════════════════════════${NC}"
 echo -e "${GREEN}✅ Installation Complete!${NC}"
