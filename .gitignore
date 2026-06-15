@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config & secrets (JANGAN push config asli ke public!)
+config.json
+*.local.json
+.env
+
+# Cache & logs (runtime, bukan source)
+*.log
+jadwal.json
+last_notified.json
+
+# Test artifacts
+.cache/
+.pytest_cache/
