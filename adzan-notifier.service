@@ -1,0 +1,15 @@
+[Unit]
+Description=Adzan Notifier (Telegram + Ubuntu notifications)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/adzan-notifier.py
+Restart=always
+RestartSec=10
+StandardOutput=append:%h/.local/share/adzan-notifier/logs/daemon.log
+StandardError=append:%h/.local/share/adzan-notifier/logs/daemon.log
+
+[Install]
+WantedBy=default.target

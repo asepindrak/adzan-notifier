@@ -1,0 +1,16 @@
+{
+  "provinsi": "Jawa Barat",
+  "kabkota": "Kab. Garut",
+  "telegram": {
+    "bot_token": "ISI_TOKEN_DARI_BOTFATHER",
+    "chat_id": "ISI_CHAT_ID_TELEGRAM"
+  },
+  "adhan": {
+    "enabled": true,
+    "audio_file": "/home/adens/.local/share/sounds/adzan.mp3",
+    "volume": 30
+  },
+  "pre_adzan_minutes": 0,
+  "notify_5_prayers": true,
+  "imsyak_reminder": false
+}
