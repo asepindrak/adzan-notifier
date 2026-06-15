@@ -48,7 +48,7 @@ adzan-notifier/
 
 ```bash
 # 1. Clone
-git clone https://github.com/USERNAME/adzan-notifier.git
+git clone https://github.com/asepindrak/adzan-notifier.git
 cd adzan-notifier
 
 # 2. Install dependencies
